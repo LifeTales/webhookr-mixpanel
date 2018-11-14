@@ -1,5 +1,5 @@
 module Webhookr
-  module ExamplePlugin
+  module Mixpanel
     VERSION = "0.0.1"
   end
 end
