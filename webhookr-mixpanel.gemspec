@@ -6,8 +6,8 @@ require 'webhookr-mixpanel/version'
 Gem::Specification.new do |gem|
   gem.name          = "webhookr-mixpanel"
   gem.version       = Webhookr::Mixpanel::VERSION
-  gem.authors       = ["Jodi Showers"]
-  gem.email         = ["jodi@nnovation.ca"]
+  gem.authors       = ["Jodi J. Showers"]
+  gem.email         = ["jodi@lifetales.com"]
   gem.description   = "A webhookr extension to support Mixpanel webhooks."
   gem.summary       = gem.description
   gem.homepage      = "http://github.com/jshow/webhookr-mixpanel"
@@ -18,6 +18,5 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_dependency("webhookr")
-  gem.add_dependency("mixpanel")
   gem.add_dependency("activesupport", [">= 3.1"])
 end
