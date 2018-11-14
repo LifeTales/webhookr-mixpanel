@@ -41,8 +41,8 @@ jobs:
     - run: echo -e "export RAILS_ENV=test\nexport RACK_ENV=test" >> $BASH_ENV
     - run: sudo curl https://cli-assets.heroku.com/install.sh | sh
 
-    - run: 'ls /home/circleci/LifeTales/'
-    - run: 'ls /home/circleci/LifeTales/webhookr-mixpanel/'
+    # run: 'ls /home/circleci/LifeTales/'
+    # run: 'ls /home/circleci/LifeTales/webhookr-mixpanel/'
 
     # Restore the dependency cache
     - restore_cache:
@@ -62,7 +62,7 @@ jobs:
     # The following line was run implicitly in your 1.0 builds based on what CircleCI inferred about the structure of your project. In 2.0 you need to be explicit about which commands should be run. In some cases you can discard inferred commands if they are not relevant to your project.
     - run:
         name: rake test webhookr-mixpanel
-        command: bundle exec rake test webhookr-mixpanel
+        command: bundle exec rake test
     # Teardown
     #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
     # Save test results
