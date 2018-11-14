@@ -41,18 +41,21 @@ jobs:
     - run: echo -e "export RAILS_ENV=test\nexport RACK_ENV=test" >> $BASH_ENV
     - run: sudo curl https://cli-assets.heroku.com/install.sh | sh
 
+    - run: 'ls /home/circleci/LifeTales/'
+    - run: 'ls /home/circleci/LifeTales/webhookr-mixpanel/'
+
     # Restore the dependency cache
     - restore_cache:
         keys:
-            - webhookr-mixpanel-{{ checksum "Gemfile.lock" }}
-            - webhookr-mixpanel-
+            - webhookr-mixpanel-bundle-{{ checksum "Gemfile.lock" }}
+            - webhookr-mixpanel-bundle-
     - run:
         name: bundle webhookr-mixpanel
         command: 'bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3'
 
     # Save dependency cache
     - save_cache:
-        key: webhookr-mixpanel-{{ checksum "Gemfile.lock" }}
+        key: webhookr-mixpanel-bundle-{{ checksum "Gemfile.lock" }}
         paths:
             - vendor/bundle
 
