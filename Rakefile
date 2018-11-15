@@ -17,9 +17,9 @@ end
 
 $:.push 'lib'
 
-version = Webhookr::ExamplePlugin::VERSION
+version = Webhookr::Mixpanel::VERSION
 
-desc 'Test Webhookr ExamplePlugin'
+desc 'Test Webhookr Mixpanel'
 Rake::TestTask.new(:test) do |t|
   t.test_files = FileList['test/**/*_tests.rb']
   t.verbose = !!ENV['VERBOSE_TESTS']
@@ -29,7 +29,7 @@ end
 desc 'Build docs'
 Rake::RDocTask.new do |t|
   t.main = 'README.md'
-  t.title = "Webhookr ExamplePlugin #{version}"
+  t.title = "Webhookr Mixpanel #{version}"
   t.rdoc_dir = 'doc'
   t.rdoc_files.include('README.md', 'MIT-LICENSE', 'lib/**/*.rb')
 end

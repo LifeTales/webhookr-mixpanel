@@ -1,10 +1,10 @@
 
 $: << File.join(File.dirname(__FILE__), %w{ .. .. .. })
 require 'test_helper'
-require 'generators/webhookr/example_plugin/init_generator'
+require 'generators/webhookr/mixpanel/init_generator'
 
 class InitGeneratorTests < Rails::Generators::TestCase
-  tests Webhookr::ExamplePlugin::Generators::InitGenerator
+  tests Webhookr::Mixpanel::Generators::InitGenerator
   destination File.expand_path("../../../tmp", File.dirname(__FILE__))
   setup :prepare_destination
 
@@ -20,7 +20,7 @@ class InitGeneratorTests < Rails::Generators::TestCase
 
   test "it should have authorization information" do
     assert_file @initializer do |content|
-      assert_match(%r{Webhookr::ExamplePlugin::Adapter\.config\.security_token}, content)
+      assert_match(%r{Webhookr::Mixpanel::Adapter\.config\.security_token}, content)
     end
   end
 end

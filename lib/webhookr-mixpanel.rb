@@ -1,13 +1,14 @@
 require "webhookr"
-require "webhookr-example_plugin/version"
+require "webhookr-mixpanel/version"
 require "webhookr/ostruct_utils"
+require 'active_support/hash_with_indifferent_access'
 
 module Webhookr
-  module ExamplePlugin
+  module Mixpanel
     class Adapter
-      SERVICE_NAME = "example_plugin"
-      EVENT_KEY = "event"
-      PAYLOAD_KEY = "msg"
+      SERVICE_NAME = "mixpanel"
+      EVENT_KEY = "do"
+      PAYLOAD_KEY = "$distinct_id"
 
       include Webhookr::Services::Adapter::Base
 
@@ -19,10 +20,15 @@ module Webhookr
         Array.wrap(parse(raw_response)).collect do |p|
           Webhookr::AdapterResponse.new(
             SERVICE_NAME,
-            p.fetch(EVENT_KEY),
+            event_type,
             OstructUtils.to_ostruct(p)
           ) if assert_valid_packet(p)
         end
+      end
+
+      # the actual event_type is in the request params, 'do' param
+      def event_type
+        'dispatch'
       end
 
       private
@@ -31,7 +37,7 @@ module Webhookr
         begin
           assert_valid_packets(
             ActiveSupport::JSON.decode(
-              CGI.unescape(raw_response).gsub(/example_plugin_events=/,"")
+              CGI.unescape(raw_response).gsub(/users=/,"")
             )
           )
         rescue Exception => e
@@ -47,7 +53,7 @@ module Webhookr
       end
 
       def assert_valid_packet(packet)
-        raise(Webhookr::InvalidPayloadError, "Unknown event #{packet[EVENT_KEY]}") unless packet[EVENT_KEY]
+#        raise(Webhookr::InvalidPayloadError, "Unknown event #{self.params.fetch(EVENT_KEY)}") unless self.params.fetch(EVENT_KEY)
         raise(Webhookr::InvalidPayloadError, "No msg in the response") unless packet[PAYLOAD_KEY]
         true
       end

@@ -2,19 +2,19 @@
 $: << File.join(File.dirname(__FILE__), "..")
 require 'test_helper'
 
-describe Webhookr::ExamplePlugin::Adapter do
+describe Webhookr::Mixpanel::Adapter do
 
   before do
-    @fired_at = "2009-03-26 22:01:00"
-    @event_type = "spam"
-    @single_response = '{ "event": "' + @event_type + '", "ts": "' + @fired_at + '", "msg": { "email": "gerry%2Bagent1@zoocasa.com" }} '
-    @valid_response = 'example_plugin_events=[' + @single_response + ']'
-    @valid_responses = 'example_plugin_events=[' + @single_response + ',' + @single_response + ']'
+    @event_type = 'dispatch'
+    @member_id = SecureRandom.uuid
+    @single_response = '{ "$distinct_id": "' + @member_id + '", "$properties": { "first_name": "Lloyd", "last_name": "Christmas" }} '
+    @valid_response = 'users=[' + @single_response + ']'
+    @valid_responses = 'users=[' + @single_response + ',' + @single_response + ']'
   end
 
   describe "the class" do
 
-    subject { Webhookr::ExamplePlugin::Adapter }
+    subject { Webhookr::Mixpanel::Adapter }
 
     it "must support process" do
       subject.must_respond_to(:process)
@@ -30,7 +30,7 @@ describe Webhookr::ExamplePlugin::Adapter do
 
   describe "the instance" do
 
-    subject { Webhookr::ExamplePlugin::Adapter.new }
+    subject { Webhookr::Mixpanel::Adapter.new }
 
     it "should not return an error for a valid packet" do
       lambda {
@@ -60,7 +60,7 @@ describe Webhookr::ExamplePlugin::Adapter do
 
   describe "it's response" do
     before do
-      @adapter = Webhookr::ExamplePlugin::Adapter.new
+      @adapter = Webhookr::Mixpanel::Adapter.new
     end
 
     subject { @adapter.process(@valid_response).first }
@@ -70,7 +70,7 @@ describe Webhookr::ExamplePlugin::Adapter do
     end
 
     it "should return the correct service name" do
-      assert_equal(Webhookr::ExamplePlugin::Adapter::SERVICE_NAME, subject.service_name)
+      assert_equal(Webhookr::Mixpanel::Adapter::SERVICE_NAME, subject.service_name)
     end
 
     it "must respond to event_type" do
@@ -85,12 +85,8 @@ describe Webhookr::ExamplePlugin::Adapter do
       subject.must_respond_to(:payload)
     end
 
-    it "must respond to payload.msg" do
-      subject.payload.must_respond_to(:msg)
-    end
-
     it "should return the correct data packet" do
-      assert_equal("gerry+agent1@zoocasa.com", subject.payload.msg.email)
+      assert_equal("Lloyd", subject.payload.send('$properties').first_name)
     end
   end
 
